@@ -42,14 +42,11 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task CreateConsumer_ShouldReturnSuccessAndCreatedConsumer_Dynamic()
         {
-            // Arrange
             var newConsumer = _fixture.Create<ContactInfo>();
             request.AddJsonBody(newConsumer);
 
-            // Act
             var response = await _client.ExecuteAsync<ContactInfo>(request);
 
-            // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsNotNull(response.Data);
             Assert.AreEqual(newConsumer.FirstName, response.Data.FirstName);

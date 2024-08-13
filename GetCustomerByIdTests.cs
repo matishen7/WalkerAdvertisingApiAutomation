@@ -39,13 +39,10 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task GetConsumerById_ShouldReturnNotFound()
         {
-            // Arrange
             var request = new RestRequest($"/api/Consumer/consumer/{int.MaxValue}", Method.Get);
 
-            // Act
             var response = await _client.ExecuteAsync<ContactInfo>(request);
 
-            // Assert
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -54,13 +51,10 @@ namespace WalkerAdvertisingApiAutomation
         [DataRow(0)]
         public async Task GetConsumerById_ShouldReturnNotFound2(int id)
         {
-            // Arrange
             var request = new RestRequest($"/api/Consumer/consumer/{id}", Method.Get);
 
-            // Act
             var response = await _client.ExecuteAsync<ContactInfo>(request);
 
-            // Assert
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
