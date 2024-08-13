@@ -1,29 +1,11 @@
-using Microsoft.Extensions.Configuration;
 using RestSharp;
+using WalkerAdvertisingApiAutomation.Requests;
 
 namespace WalkerAdvertisingApiAutomation
 {
     [TestClass]
-    public class CreateConsumerTests
+    public class CreateConsumerTests : BaseTest
     {
-        private RestClient _client;
-        private string _baseUrl;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            // Load configuration from appsettings.json
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            // Retrieve the base URL from the configuration file
-            _baseUrl = config["ApiBaseUrl"];
-
-            // Initialize the RestClient with the base URL
-            _client = new RestClient(_baseUrl);
-        }
         [TestMethod]
         public async Task CreateConsumer_ShouldReturnSuccessAndCreatedConsumer()
         {
