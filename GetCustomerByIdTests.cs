@@ -49,6 +49,21 @@ namespace WalkerAdvertisingApiAutomation
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
+        [TestMethod]
+        [DataRow(-1)]
+        [DataRow(0)]
+        public async Task GetConsumerById_ShouldReturnNotFound2(int id)
+        {
+            // Arrange
+            var request = new RestRequest($"/api/Consumer/consumer/{id}", Method.Get);
+
+            // Act
+            var response = await _client.ExecuteAsync<ContactInfo>(request);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
         private async Task<ContactInfo> CreateConsumerAsync()
         {
             var newConsumer = _fixture.Create<ContactInfo>();

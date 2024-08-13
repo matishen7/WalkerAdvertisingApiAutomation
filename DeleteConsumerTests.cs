@@ -44,6 +44,21 @@ namespace WalkerAdvertisingApiAutomation
             Assert.IsTrue(allCustomersResponse.Data.Find(x => x.Id == id) == null, $"There should be no customer found with id {id}");
         }
 
+        [TestMethod]
+        public async Task DeleteConsumer_ShouldReturnSuccess_And_GetById()
+        {
+            var id = await CreateConsumerAsync();
+            var request = new RestRequest($"/api/Consumer/{id}", Method.Delete);
+
+            var response = await _client.ExecuteAsync(request);
+
+            //Validate if consumer is deleted
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
+            request = new RestRequest($"/api/Consumer/consumer/{id}", Method.Get);
+            var getResponse = await _client.ExecuteAsync<ContactInfo>(request);
+            Assert.AreEqual(HttpStatusCode.NotFound, getResponse.StatusCode);
+        }
+
         private async Task<int> CreateConsumerAsync()
         {
             var newConsumer = _fixture.Create<ContactInfo>();
