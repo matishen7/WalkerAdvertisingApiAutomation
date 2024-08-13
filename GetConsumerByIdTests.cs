@@ -11,7 +11,7 @@ using WalkerAdvertisingApiAutomation.Requests;
 namespace WalkerAdvertisingApiAutomation
 {
     [TestClass]
-    public class GetCustomerByIdTests : BaseTest
+    public class GetConsumerByIdTests : BaseTest
     {
         [TestMethod]
         public async Task GetConsumerById_ShouldReturnSuccessAndConsumer()
