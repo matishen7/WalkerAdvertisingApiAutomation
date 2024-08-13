@@ -43,7 +43,6 @@ namespace WalkerAdvertisingApiAutomation
         public async Task CreateConsumer_ShouldReturnSuccessAndCreatedConsumer_Dynamic()
         {
             // Arrange
-
             var newConsumer = _fixture.Create<ContactInfo>();
             request.AddJsonBody(newConsumer);
 
