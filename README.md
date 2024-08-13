@@ -19,8 +19,6 @@ The following NuGet packages are used in this project:
 - **MSTest.TestFramework**: MSTest test framework used for running the tests.
 - **MSTest.TestAdapter**: Adapter for MSTest that integrates with Visual Studio and other test runners.
 - **RestSharp**: A simple REST and HTTP API client for .NET, used to send HTTP requests and process responses.
-- **Moq**: A popular and friendly mocking library for .NET.
-- **Newtonsoft.Json**: A high-performance JSON framework for .NET, used for serialization and deserialization.
 
 You can install these packages via NuGet Package Manager or by running the following commands in the NuGet Package Manager Console:
 
@@ -28,15 +26,17 @@ You can install these packages via NuGet Package Manager or by running the follo
 dotnet add package MSTest.TestFramework
 dotnet add package MSTest.TestAdapter
 dotnet add package RestSharp
-dotnet add package Moq
-dotnet add package Newtonsoft.Json
 ```
 
 ## Project Structure
 
 The project includes the following key components:
 
-- **`ConsumerApiTests.cs`**: Contains test methods for verifying the various API endpoints. Tests cover scenarios such as getting all consumers, retrieving a consumer by ID, creating a new consumer, updating an existing consumer, and deleting a consumer.
+- **`CreateConsumerTests.cs`**: Contains test methods for verifying the Consumer create endpoint.
+- **`DeleteConsumerTests.cs`**: Contains test methods for verifying the Consumer Delete endpoint.
+- **`UpdateConsumerTests.cs`**: Contains test methods for verifying the Consumer Update endpoint.
+- **`GetAllConsumersTests.cs`**: Contains test methods for verifying the Get All Consumer endpoint.
+- **`GetConsumerByIdTests.cs`**: Contains test methods for verifying the Get Consumer by id endpoint.
 - **`ContactInfo.cs`**: A model class that represents the structure of the consumer data returned by the API.
 
 ## Running the Tests
