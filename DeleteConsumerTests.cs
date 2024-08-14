@@ -17,11 +17,10 @@ namespace WalkerAdvertisingApiAutomation
         public async Task DeleteConsumer_ShouldReturnSuccess()
         {
             // Arrange - Create a consumer first
-            var id = await CreateConsumerAsync();
-            var request = new RestRequest($"/api/Consumer/{id}", Method.Delete);
+            var id = await CreateConsumer();
 
             // Act
-            var response = await _client.ExecuteAsync(request);
+            var response = await Client.Instance.DeleteConsumer(id);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -30,14 +29,12 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task DeleteConsumer_ShouldReturnSuccess_And_Validate()
         {
-            var id = await CreateConsumerAsync();
-            var request = new RestRequest($"/api/Consumer/{id}", Method.Delete);
+            var id = await CreateConsumer();
 
-            var response = await _client.ExecuteAsync(request);
+            var response = await Client.Instance.DeleteConsumer(id);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            request = new RestRequest("/api/Consumer", Method.Get);
-            var allCustomersResponse = await _client.ExecuteAsync<List<ContactInfo>>(request);
+            var allCustomersResponse = await Client.Instance.GetAllConsumers();
             Assert.AreEqual(HttpStatusCode.OK, allCustomersResponse.StatusCode);
             Assert.IsNotNull(allCustomersResponse.Data);
             Assert.IsInstanceOfType(allCustomersResponse.Data, typeof(List<ContactInfo>));
@@ -47,24 +44,20 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task DeleteConsumer_ShouldReturnSuccess_And_GetById()
         {
-            var id = await CreateConsumerAsync();
-            var request = new RestRequest($"/api/Consumer/{id}", Method.Delete);
+            var id = await CreateConsumer();
 
-            var response = await _client.ExecuteAsync(request);
+            var response = await Client.Instance.DeleteConsumer(id);
 
             //Validate if consumer is deleted
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
-            request = new RestRequest($"/api/Consumer/consumer/{id}", Method.Get);
-            var getResponse = await _client.ExecuteAsync<ContactInfo>(request);
+            var getResponse = await Client.Instance.GetConsumerById(id);
             Assert.AreEqual(HttpStatusCode.NotFound, getResponse.StatusCode);
         }
 
-        private async Task<int> CreateConsumerAsync()
+        private async Task<int> CreateConsumer()
         {
             var newConsumer = _fixture.Create<ContactInfo>();
-            var request = new RestRequest($"/api/Consumer", Method.Post);
-            request.AddJsonBody(newConsumer);
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.CreateConsumer(newConsumer);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsNotNull(response.Data);

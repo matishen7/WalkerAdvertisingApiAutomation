@@ -16,11 +16,8 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task GetAllConsumers_ShouldReturnSuccessAndConsumers()
         {
-            // Arrange
-            var request = new RestRequest("/api/Consumer", Method.Get);
-
             // Act
-            var response = await _client.ExecuteAsync<List<ContactInfo>>(request);
+            var response = await Client.Instance.GetAllConsumers();
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

@@ -18,10 +18,9 @@ namespace WalkerAdvertisingApiAutomation
         {
             // Arrange
             var newConsumer = await CreateConsumerAsync();
-            var request = new RestRequest($"/api/Consumer/consumer/{newConsumer.Id}", Method.Get);
 
             // Act
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.GetConsumerById(newConsumer.Id);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -39,9 +38,8 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task GetConsumerById_ShouldReturnNotFound()
         {
-            var request = new RestRequest($"/api/Consumer/consumer/{int.MaxValue}", Method.Get);
 
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.GetConsumerById(int.MaxValue);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -51,9 +49,8 @@ namespace WalkerAdvertisingApiAutomation
         [DataRow(0)]
         public async Task GetConsumerById_ShouldReturnNotFound2(int id)
         {
-            var request = new RestRequest($"/api/Consumer/consumer/{id}", Method.Get);
 
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.GetConsumerById(id);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -61,9 +58,7 @@ namespace WalkerAdvertisingApiAutomation
         private async Task<ContactInfo> CreateConsumerAsync()
         {
             var newConsumer = _fixture.Create<ContactInfo>();
-            var request = new RestRequest($"/api/Consumer", Method.Post);
-            request.AddJsonBody(newConsumer);
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.CreateConsumer(newConsumer);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsNotNull(response.Data);

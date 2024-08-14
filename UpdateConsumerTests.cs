@@ -18,7 +18,6 @@ namespace WalkerAdvertisingApiAutomation
         {
             // Arrange
             var newConsumer = await CreateConsumerAsync();
-            var request = new RestRequest("/api/Consumer", Method.Put);
             var updatedConsumer = new ContactInfo
             {
                 Id = newConsumer.Id,
@@ -29,10 +28,9 @@ namespace WalkerAdvertisingApiAutomation
                 State = "NY",
                 Reason = "Update Information"
             };
-            request.AddJsonBody(updatedConsumer);
 
             // Act
-            var response = await _client.ExecuteAsync(request);
+            var response = await Client.Instance.UpdateConsumer(updatedConsumer);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -44,7 +42,6 @@ namespace WalkerAdvertisingApiAutomation
         {
             // Arrange
             var newConsumer = await CreateConsumerAsync();
-            var request = new RestRequest("/api/Consumer", Method.Put);
             var updatedConsumer = new ContactInfo
             {
                 Id = newConsumer.Id,
@@ -55,15 +52,13 @@ namespace WalkerAdvertisingApiAutomation
                 State = "NY",
                 Reason = "Update Information"
             };
-            request.AddJsonBody(updatedConsumer);
 
             // Act
-            var response = await _client.ExecuteAsync(request);
+            var response = await Client.Instance.UpdateConsumer(updatedConsumer);
 
             // Assert against Get consumer by Id
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            request = new RestRequest($"/api/Consumer/consumer/{newConsumer.Id}", Method.Get);
-            var getResponse = await _client.ExecuteAsync<ContactInfo>(request);
+            var getResponse = await Client.Instance.GetConsumerById(updatedConsumer.Id);
 
             Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
             Assert.IsNotNull(getResponse.Data);
@@ -81,7 +76,6 @@ namespace WalkerAdvertisingApiAutomation
         [TestMethod]
         public async Task UpdateConsumer_ShouldReturnNotFound()
         {
-            var request = new RestRequest("/api/Consumer", Method.Put);
             var updatedConsumer = new ContactInfo
             {
                 Id = int.MaxValue,
@@ -92,9 +86,8 @@ namespace WalkerAdvertisingApiAutomation
                 State = "NY",
                 Reason = "Update Information"
             };
-            request.AddJsonBody(updatedConsumer);
 
-            var response = await _client.ExecuteAsync(request);
+            var response = await Client.Instance.UpdateConsumer(updatedConsumer);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
             // this must be a bug, because it is returning 500 error for non existing consumer
@@ -104,9 +97,7 @@ namespace WalkerAdvertisingApiAutomation
         private async Task<ContactInfo> CreateConsumerAsync()
         {
             var newConsumer = _fixture.Create<ContactInfo>();
-            var request = new RestRequest($"/api/Consumer", Method.Post);
-            request.AddJsonBody(newConsumer);
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.CreateConsumer(newConsumer);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsNotNull(response.Data);

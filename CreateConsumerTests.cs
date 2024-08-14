@@ -8,7 +8,6 @@ namespace WalkerAdvertisingApiAutomation
     [TestClass]
     public class CreateConsumerTests : BaseTest
     {
-        private RestRequest request = new RestRequest("/api/Consumer", Method.Post);
 
         [TestMethod]
         public async Task CreateConsumer_ShouldReturnSuccessAndCreatedConsumer()
@@ -23,10 +22,9 @@ namespace WalkerAdvertisingApiAutomation
                 State = "CA",
                 Reason = "New Registration"
             };
-            request.AddJsonBody(newConsumer);
 
             // Act
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.CreateConsumer(newConsumer);
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -43,9 +41,8 @@ namespace WalkerAdvertisingApiAutomation
         public async Task CreateConsumer_ShouldReturnSuccessAndCreatedConsumer_Dynamic()
         {
             var newConsumer = _fixture.Create<ContactInfo>();
-            request.AddJsonBody(newConsumer);
 
-            var response = await _client.ExecuteAsync<ContactInfo>(request);
+            var response = await Client.Instance.CreateConsumer(newConsumer);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsNotNull(response.Data);
