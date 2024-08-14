@@ -15,16 +15,14 @@ namespace WalkerAdvertisingApiAutomation
             _fixture = new Fixture();
         }
 
-        //[TestCleanup]
-        //public async Task Cleanup()
-        //{
-        //    var request = new RestRequest("/api/Consumer", Method.Get);
-        //    var response = await _client.ExecuteAsync<List<ContactInfo>>(request);
-        //    foreach (var consumer in response.Data)
-        //    {
-        //        request = new RestRequest($"/api/Consumer/{consumer.Id}", Method.Delete);
-        //        await _client.ExecuteAsync(request);
-        //    }
-        //}
+        [TestCleanup]
+        public async Task Cleanup()
+        {
+            var response = await Client.Instance.GetAllConsumers();
+            foreach (var consumer in response.Data)
+            {
+                await Client.Instance.DeleteConsumer(consumer.Id);
+            }
+        }
     }
 }
